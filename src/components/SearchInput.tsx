@@ -12,6 +12,7 @@ export const SearchInput = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    console.log(bookId)
     if (bookId) {
       router.push(`/book/${bookId}`)
     }

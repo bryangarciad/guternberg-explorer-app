@@ -9,9 +9,10 @@ export default async function BookPage({ params }: { params: { id: string } }) {
 
     let book = null;
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/book/content/${id}`);
+      const response = await axios.get(`http://147.182.188.166:8000/book/${id}`);
       if (response.status === 200) {
         book = response.data.data;
+        book.id = id
       }
     } catch(err) {
       console.error(err);

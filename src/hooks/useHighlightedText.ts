@@ -7,5 +7,5 @@ export const useHighlightedText = () => {
     setHighlightedText((prev) => [...prev, text])
   }, [])
 
-  return { highlightedText, addHighlightedText }
+  return { highlightedText, addHighlightedText, setHighlightedText }
 }

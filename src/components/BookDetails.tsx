@@ -25,12 +25,18 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
             className="w-48 h-auto mx-auto rounded-md shadow-md hover:shadow-lg transition-shadow"
           />
         </Link>
-        {Object.entries(book).map(([key, val]) => (
-          <React.Fragment key={key}>
-            <h4>{key}</h4>
-            <p>{val}</p>
-          </React.Fragment>
-        ))}
+        <div className="flex-grow">
+          <h3 className="text-3xl font-bold">Metadata</h3>
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
+              {Object.entries(book).map(([key, value]) => (
+                key !== "cover_url" &&
+                <div key={key} className="col-span-2 sm:col-span-1">
+                  <dt className="text-sm font-medium text-gray-500">{key}</dt>
+                  <dd className="mt-1 text-sm text-gray-900" >{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
       </CardContent>
       <CardFooter>
         <Link href={`/read/${book.id}`} className="w-full">
