@@ -1,6 +1,7 @@
 "use client"
 
 import React, {useState, useCallback} from "react"
+import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
@@ -10,12 +11,17 @@ interface ReaderProps {
   book: string
 }
 
+interface AnalysisResults {
+  characters: string;
+  summary: string;
+}
 interface highlightedTextWithAnalysis {
   highlightedText: string;
-  analysis?: {[key: string]: string};
+  analysis?: AnalysisResults
 }
 
 export const Reader: React.FC<ReaderProps> = ({ book }) => {
+  const { toast } = useToast()
    const [highlightedText, setHighlightedText] = useState<highlightedTextWithAnalysis[]>([])
   
     const addHighlightedText = useCallback((text: string) => {
@@ -37,8 +43,21 @@ export const Reader: React.FC<ReaderProps> = ({ book }) => {
   }
 
   const handleOnAnalyze = async (text: string, index: number) => {
+    const showAnalysis = (analysis: AnalysisResults) => {
+      const { characters, summary } = analysis;
+      if (!characters || !summary) return
+      toast({
+        title: "Here is your analysis",
+        description: `Main Characters: ${characters}, Summary: ${summary}`,
+      });
+    }
+  
     try {
-      const response = await axios.post(`http://147.182.188.166:8000/book-analize/`, {
+      if (highlightedText[index]?.analysis) {
+        const analysisResults = highlightedText[index]?.analysis
+        showAnalysis(analysisResults);
+      }
+      const response = await axios.post(`http://147.182.188.166:8000/analyze/`, {
         data: text
       });
       if (response.status === 200) {
@@ -52,6 +71,8 @@ export const Reader: React.FC<ReaderProps> = ({ book }) => {
         })
 
         setHighlightedText([...updatedHighlightedTextWithAnalysis])
+
+        showAnalysis(analysis)
       }
     } catch (err) {
       console.error(err)
@@ -78,12 +99,12 @@ export const Reader: React.FC<ReaderProps> = ({ book }) => {
           </CardHeader>
           <CardContent>
             <ul className="list-disc pl-5 space-y-2">
-              {highlightedText.map((text, index) => (
+              {highlightedText.map((item, index) => (
                   <span key={index}>
                     <li className="text-gray-700">
-                      {text}
+                      {item.highlightedText}
                     </li>
-                    <Badge variant="secondary"  onClick={() => handleOnAnalyze(text, index)}>Analyze</Badge>
+                    <Badge variant="secondary"  onClick={() => handleOnAnalyze(item.highlightedText, index)}>Analyze</Badge>
                     <Badge variant="destructive" onClick={() => handleOnRemove(index)}>Remove</Badge>
                   </span>
             ))}
