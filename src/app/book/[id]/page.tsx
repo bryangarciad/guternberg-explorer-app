@@ -4,7 +4,8 @@ import { GoBackButton } from "@/components/GoBackButton";
 import axios from "axios";
 
 
-export default async function BookPage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string[] }>
+export default async function BookPage({ params }: { params: Params }) {
     const { id } = await params;
 
     let book = null;
