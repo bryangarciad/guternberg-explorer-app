@@ -24,6 +24,8 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
             src={book.cover_url || "/placeholder.svg"}
             alt={`Cover of ${book.title}`}
             className="w-48 h-auto mx-auto rounded-md shadow-md hover:shadow-lg transition-shadow"
+            width={200}
+            height={300}
           />
         </Link>
         <div className="flex-grow">

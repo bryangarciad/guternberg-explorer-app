@@ -81,10 +81,10 @@ export const Reader: React.FC<ReaderProps> = ({ book }) => {
   }
 
   return (
-    <div className="h-[80vh] w-[52vw] space-y-8">
+    <div className="flex flex-row justify-center w-[95vw] min-w-[50vw]">
       <Card>
         <CardContent>
-          <ScrollArea className="h-[80vh] w-[50vw]">
+          <ScrollArea className="h-[85vh] w-[50vw]">
             <div className="text-gray-800 leading-relaxed prose prose-lg" onMouseUp={handleTextSelection}>
               {book}
             </div>
@@ -93,11 +93,11 @@ export const Reader: React.FC<ReaderProps> = ({ book }) => {
       </Card>
 
       {highlightedText.length > 0 && (
-        <Card>
+        <Card className="mx-1 w-[30vw]">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">Highlighted Text</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="max-h-[80vh] overflow-y-scroll">
             <ul className="list-disc pl-5 space-y-2">
               {highlightedText.map((item, index) => (
                   <span key={index}>
